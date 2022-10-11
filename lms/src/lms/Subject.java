@@ -10,7 +10,5 @@ public class Subject {
 	}
 	
 	Student[] students;
-	
 	String[] subTitles = {"국어", "수학", "영어"};
-
 }

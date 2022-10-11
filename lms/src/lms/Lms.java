@@ -33,7 +33,6 @@ public class Lms {
 	}
 	
 	int printMenu() {
-		
 		System.out.println("1.추가");
 		System.out.println("2.삭제");
 		System.out.println("3.정렬");
@@ -43,7 +42,6 @@ public class Lms {
 		System.out.print("입력 : ");
 		int sel = scan.nextInt();
 		return sel;
-		
 	}
 	
 	int printAddSubMenu() {

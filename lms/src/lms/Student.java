@@ -30,7 +30,6 @@ public class Student {
 	Subject[] subjects;
 	
 	void printSubjects() {
-		
 		for(int i = 0 ; i < this.subCnt ; i ++) {
 			Subject subject = this.subjects[i];
 			System.out.printf("ㄴ %d) %s (%d점)\n", i + 1, subject.title, subject.score);

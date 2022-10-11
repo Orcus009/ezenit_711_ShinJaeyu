@@ -10,7 +10,6 @@ public class Filemanager {
 	private BufferedReader br;
 
 	void saveData() {
-		
 		String data = "";
 		
 		for(int i = 0 ; i < this.cnt ; i ++) {
