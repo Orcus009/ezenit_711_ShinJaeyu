@@ -10,15 +10,14 @@ public class Filemanager {
 	private BufferedReader br;
 
 	void saveData() {
-		// 학번/학생명,수강과목1/,수강과목2/성적2
+		
 		String data = "";
 		
 		for(int i = 0 ; i < this.cnt ; i ++) {
 			Student student = this.students[i];
-			data += student.number + "/";
-			data += student.name;
+			data += student.getNumber() + "/";
+			data += student.getName();
 			
-			// 과목 붙이기
 			for(int j = 0 ; j < student.subCnt ; j ++) {
 				Subject subject = student.subjects[j];
 				
@@ -42,7 +41,7 @@ public class Filemanager {
 	}
 	
 	void loadData() {
-		saveData(); // 자동처리 후, 로드
+		saveData();
 		
 		this.cnt = 0;
 		this.students = null;
@@ -59,7 +58,7 @@ public class Filemanager {
 				
 				Student student = new Student(number, name);
 				
-				if(data.length > 1) { // 수강신청 내역이 존재함
+				if(data.length > 1) {
 					student.subCnt = data.length - 1;
 					student.subjects = new Subject[data.length - 1];
 					

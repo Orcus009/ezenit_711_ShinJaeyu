@@ -6,8 +6,7 @@ public class Subject {
 	int score;
 	
 	Subject(String title){
-		this.title = title;
-		
+		this.title = title;	
 	}
 	
 	Student[] students;

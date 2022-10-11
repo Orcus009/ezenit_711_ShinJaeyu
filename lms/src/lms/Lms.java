@@ -6,6 +6,14 @@ import java.util.*;
 public class Lms {
 
 	private ArrayList<Student> list;
+	
+	public ArrayList<Student> getList() {
+		return this.list;
+	}
+	
+	public void setList(ArrayList<Student> list) {
+		this.list = list;
+	}
 
 	Scanner scan;
 	
@@ -16,43 +24,15 @@ public class Lms {
 	
 	String brand;
 	
-	int size;
-	
 	int cnt;
-	Student[] students;
 	
-	String[] subTitles = {"국어", "수학", "영어"};
-	
-	// Lms 클래스의 생성자
 	Lms(String brand){
-		this.scan = new Scanner(System.in); // 생성단계에서 -> 멤버 초기화
+		this.scan = new Scanner(System.in);
 		this.file = new File(brand);
 		this.brand = brand;
 	}
 	
-	void addStudent(String name) {
-		int num = randomGenerator();
-		Student student = new Student(0, name);
-		
-		Student[] stuTemp = this.students;
-		this.students = new Student[size + 1];
-		for(int i = 0 ; i < size ; i ++)
-			this.students[i] = stuTemp[i]; // 클래스 주소값으로 옮김
-		this.students[size] = student;
-		size ++;
-	}
-	
 	int printMenu() {
-		
-		// 1.추가
-		// 1-1.학생
-		// 1-2.과목
-		// 1-3.성적
-		// 2.삭제
-		// 3.정렬
-		// 4.출력
-		// 5.저장
-		// 6.로드
 		
 		System.out.println("1.추가");
 		System.out.println("2.삭제");
@@ -87,14 +67,14 @@ public class Lms {
 		System.out.print("등록할 학생명 : ");
 		String name = this.scan.next();
 		
-		int num = randomGenerator(); // 랜덤 학번 발행
+		int num = randomGenerator();
 		
 		Student[] temp = this.students;
 		this.students = new Student[this.cnt + 1];
 		for(int i = 0 ; i < this.cnt ; i ++)
 			this.students[i] = temp[i];
 		
-		Student student = new Student(num, name); // 새로운 학생객체 생성
+		Student student = new Student(num, name);
 		this.students[cnt] = student;
 		this.cnt ++;
 		
@@ -108,7 +88,7 @@ public class Lms {
 		while(true) {
 			rNum = rand.nextInt(8999) + 1000;
 			boolean dupl = false;
-			for(int i = 0 ; i < size ; i ++) {
+			for(int i = 0 ; i < cnt ; i ++) {
 				Student student = this.students[i];
 				if(rNum == student.getNumber())
 					dupl = true;
@@ -116,7 +96,7 @@ public class Lms {
 			if(!dupl) 
 				break;
 		}
-		return rNum; // 중복되지 않은 랜덤 학번 -> 리턴
+		return rNum;
 	}
 	
 	void printStudentAll() {
@@ -140,15 +120,15 @@ public class Lms {
 		for(int i = 0 ; i < this.cnt ; i ++) {
 			Student student = this.students[i];
 			if(student.getNumber() == num)
-				return student; // return 키워드를 만나면 -> 메소드가 즉시 소멸
+				return student;
 		}
 		return null;
 	}
 	
 	void addSubject() {
-		Student student = getStudent(cnt); // 학번을 통한 Student 객체를 얻어오기
+		Student student = getStudent(cnt);
 		
-		if(student != null) { // 학생이 존재하면
+		if(student != null) {
 			printSubjectTitles();
 			System.out.print("과목 선택 : ");
 			int idx = this.scan.nextInt() - 1;
@@ -156,7 +136,6 @@ public class Lms {
 			if(idx >= 0 && idx < this.subTitles.length) {
 				Subject[] temp = student.subjects;
 				
-				// 중복 수강신청 예외처리
 				boolean dupl = false;
 				for(int i = 0 ; i < student.subCnt ; i ++) {
 					Subject subject = temp[i];
@@ -182,10 +161,10 @@ public class Lms {
 	}
 	
 	void updateScore() {
-		Student student = getStudent(cnt); // 학번을 통한 Student 객체를 얻어오기
+		Student student = getStudent(cnt);
 		
 		if(student != null) {
-			student.printSubjects(); // 신청한 과목 목록 출력
+			student.printSubjects();
 			System.out.print("수정할 과목 : ");
 			int idx = this.scan.nextInt() - 1;
 			
@@ -246,7 +225,7 @@ public class Lms {
 		}
 	}
 	
-	void sortStudent() { // 이름순으로 정렬
+	void sortStudent() { 
 		for(int i = 0 ; i < this.cnt ; i ++) {
 			Student student = this.students[i];
 			String first = this.students[i].getName();
@@ -262,90 +241,9 @@ public class Lms {
 		}
 	}
 	
-	void saveData() {
-		// 학번/학생명,수강과목1/,수강과목2/성적2
-		String data = "";
-		
-		for(int i = 0 ; i < this.cnt ; i ++) {
-			Student student = this.students[i];
-			data += student.getNumber() + "/";
-			data += student.getName();
-			
-			// 과목 붙이기
-			for(int j = 0 ; j < student.subCnt ; j ++) {
-				Subject subject = student.subjects[j];
-				
-				data += ",";
-				data += subject.title + "/";
-				data += subject.score;
-			}
-			if(i < this.cnt - 1)
-				data += "\n";
-		}
-		
-		try {
-			fw = new FileWriter(this.file);
-			fw.write(data);
-			fw.close();
-			System.out.println("파일저장 성공");
-		} catch(Exception e) {
-			e.printStackTrace();
-			System.out.println("파일저장 실패");
-		}
-	}
-	
-	void loadData() {
-		saveData(); // 자동처리 후, 로드
-		
-		this.cnt = 0;
-		this.students = null;
-		try {
-			this.fr = new FileReader(this.file);
-			this.br = new BufferedReader(this.fr);
-			
-			while(this.br.ready()) {
-				String[] data = this.br.readLine().split(",");
-				
-				String[] info = data[0].split("/");
-				int number = Integer.parseInt(data[0]);
-				String name = info[1];
-				
-				Student student = new Student(number, name);
-				
-				if(data.length > 1) { // 수강신청 내역이 존재함
-					student.subCnt = data.length - 1;
-					student.subjects = new Subject[data.length - 1];
-					
-					for(int i = 1 ; i < data.length ; i ++) {
-						info = data[i].split("/");
-						
-						Subject subject = new Subject(info[0]);
-						subject.score = Integer.parseInt(info[1]);
-						student.subjects[i - 1] = subject;
-					}
-				}
-				Student[] temp = this.students;
-				this.students = new Student[this.cnt + 1];
-				for(int i = 0 ; i < this.cnt ; i ++)
-					this.students[i] = temp[i];
-				this.students[this.cnt] = student;
-				this.cnt ++;
-			}
-				
-			this.fr.close();
-			this.br.close();
-			System.out.println("파일로드 성공");
-		} catch(Exception e) {
-			e.printStackTrace();
-			System.out.println("파일로드 실패");
-		}
-	}
-	
-	// Lms 클래스가 가진 멤버 메소드
 	void run() {
 		
 		while(true) {
-			printStudentAll(); // 검수용
 			int sel = printMenu();
 			
 			if(sel == 1) {
@@ -379,7 +277,7 @@ public class Lms {
 			}
 						
 			else if(sel == 4) {
-				
+				printStudentAll();
 			}
 						
 			else if(sel == 5) {
