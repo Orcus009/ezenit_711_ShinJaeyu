@@ -2,13 +2,30 @@ package lms;
 
 public class Subject {
 	
-	String title;
-	int score;
+	private String title;
+	private int score;
 	
-	Subject(String title){
-		this.title = title;	
+	// Constructor 
+	public Subject(String title) {
+		this.title = title;
+	}
+	// 생성자 오버로딩 
+	public Subject(String title, int score) {
+		this.title = title;
+		this.score = score;
 	}
 	
-	Student[] students;
-	String[] subTitles = {"국어", "수학", "영어"};
+	// Getter & Setter 
+	public String getTitle() {
+		return this.title;
+	}
+	
+	public int getScore() {
+		return this.score;
+	}
+	
+	public void setScore(int score) {
+		this.score = score;
+	}
+
 }
