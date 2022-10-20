@@ -43,7 +43,8 @@ class StartMenu {
 					System.out.println();
 					
 					if(call == 'y') {
-						
+						HeroList list = new HeroList();
+						list.callUnit();
 					}
 				}
 				

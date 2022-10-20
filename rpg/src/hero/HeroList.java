@@ -35,7 +35,7 @@ public class HeroList {
 		Random rand = new Random();
 		
 		int ran = rand.nextInt(8) + 2;
-		String name = NameGenerator.createName(1);
+		String name = NameGenerator.createName(NameGenerator.HERO);
 		int hp = ran * 11;
 		int att = ran + 1;
 		int def = ran / 2 + 1;
